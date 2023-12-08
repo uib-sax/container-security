@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+  namespace: nginx-tls-certmanager
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginx-tls-certmanager
+  template:
+    metadata:
+      labels:
+        app: nginx-tls-certmanager
+    spec:
+      containers:
+        - name: nginx
+          image: nginx:latest
+          ports:
+            - containerPort: 443
+          volumeMounts:
+            - name: tls-certs
+              mountPath: /etc/nginx/certs
+              readOnly: true
+            - name: config
+              mountPath: /etc/nginx/conf.d/default.conf
+              readOnly: true
+              subPath: default.conf
+      volumes:
+        - name: tls-certs
+          secret:
+            secretName: nginx-tls-certificate-certmanager
+        - name: config
+          configMap:
+            name: nginx-config-configmap

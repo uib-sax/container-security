@@ -1,0 +1,11 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: selfsigned-cert
+  namespace: nginx-tls-certmanager
+spec:
+  secretName: nginx-tls-certificate-certmanager
+  issuerRef:
+    name: selfsigner-issuer
+    kind: ClusterIssuer
+  commonName: advanced-network-security.com

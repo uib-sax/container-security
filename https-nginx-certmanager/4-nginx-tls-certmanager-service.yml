@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-tls-service
+  namespace: nginx-tls-certmanager
+spec:
+  selector:
+    app: nginx-tls-certmanager  # Match the labels used in the Deployment
+  ports:
+    - protocol: TCP
+      port: 443    # Port inside the Kubernetes cluster
+      targetPort: 443  # Port exposed by the NGINX container
+      nodePort: 30011
+  type: NodePort  
