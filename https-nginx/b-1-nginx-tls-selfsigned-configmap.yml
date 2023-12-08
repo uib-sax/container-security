@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  labels:
+    app: nginx-configmap
+  name: nginx-config-configmap
+  namespace: nginx-tls-manual
+data:
+  default.conf: |-
+    map $sent_http_content_type $expires {
+      "text/html"                 epoch;
+      "text/html; charset=utf-8"  epoch;
+      default                     off;
+    }
+
+    server {
+      listen 443 ssl;
+      server_name example.com;
+      server_tokens off;
+
+      root /var/www/;
+      index index.html index.htm;
+
+      ssl_certificate /etc/nginx/certs/tls.crt;
+      ssl_certificate_key /etc/nginx/certs/tls.key;
+    }
